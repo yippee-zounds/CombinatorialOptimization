@@ -12,12 +12,6 @@ namespace Drace.TravelingSalesmanProblem
         public int i;
         public int j;
 
-        public TwoOptOperation(int i, int j)
-        {
-            this.i = i;
-            this.j = j;
-        }
-
         public TwoOptOperation(int size, int i, int j)
         {
             this.i = i;

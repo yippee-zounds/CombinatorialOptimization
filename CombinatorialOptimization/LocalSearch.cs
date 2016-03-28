@@ -44,6 +44,27 @@ namespace CombinatorialOptimization
             }
         }
 
+        public ISolution SolveByStep(IOptimizationProblem p, ISolution sol, DataStoringWriter w)
+        {
+            ISolution s = sol.Clone();
+            MinimumKeeper mk = new MinimumKeeper();
+            BestImprovement m = new BestImprovement();
+
+            w.WriteLine("loop:vx:doptx:dom:x");
+
+            for (int loop = 0; true; loop++)
+            {
+                ISolution tmp = m.Move(s, def);
+
+                if (mk.IsNotMinimumStrict(tmp.Value))
+                {
+                    w.WriteLine(Trace(loop, p.Optimum, s, sol));
+                    return s;
+                }
+                s = tmp;
+            }
+        }
+
         public ISolution Solve(IOptimizationProblem p, IOperationSet ops, ISolution sol, DataStoringWriter w)
         {
             ISolution s = sol.Clone();
