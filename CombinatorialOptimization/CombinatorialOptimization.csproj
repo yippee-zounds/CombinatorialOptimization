@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{465065AF-4CFD-4065-B53E-AD9B60005CE1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CombinatorialOptimization</RootNamespace>
+    <AssemblyName>CombinatorialOptimization</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccProjectName>%24/Optimization/CombinatorialOptimization/CombinatorialOptimization</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>http://server:8080/tfs/defaultcollection</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CombinatorialOptimization.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdaptiveRandomLocalSearch.cs" />
+    <Compile Include="HigherLevelSearch.cs" />
+    <Compile Include="IterativeSearch.cs" />
+    <Compile Include="LocalSearch.cs" />
+    <Compile Include="MultipleRandomLocalSearch.cs" />
+    <Compile Include="NonReactiveRandomLocalSearch.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomLocalSearch.cs" />
+    <Compile Include="RandomWalk.cs" />
+    <Compile Include="ReactiveRandomLocalSearch631.cs" />
+    <Compile Include="ReactiveRandomLocalSearch66.cs" />
+    <Compile Include="ReactiveRandomLocalSearch65.cs" />
+    <Compile Include="ReactiveRandomLocalSearch63.cs" />
+    <Compile Include="ReactiveRandomLocalSearch10.cs" />
+    <Compile Include="ReactiveRandomLocalSearch11.cs" />
+    <Compile Include="ReactiveRandomLocalSearch12.cs" />
+    <Compile Include="ReactiveRandomLocalSearch6.cs" />
+    <Compile Include="ReactiveRandomLocalSearch61.cs" />
+    <Compile Include="ReactiveRandomLocalSearch62.cs" />
+    <Compile Include="ReactiveRandomLocalSearch64.cs" />
+    <Compile Include="ReactiveRandomLocalSearch67.cs" />
+    <Compile Include="ReactiveRandomLocalSearch68.cs" />
+    <Compile Include="ReactiveRandomLocalSearch69.cs" />
+    <Compile Include="ReactiveRandomLocalSearch7.cs" />
+    <Compile Include="ReactiveRandomLocalSearch2.cs" />
+    <Compile Include="ReactiveRandomLocalSearch3.cs" />
+    <Compile Include="ReactiveRandomLocalSearch4.cs" />
+    <Compile Include="ReactiveRandomLocalSearch5.cs" />
+    <Compile Include="ReactiveRandomLocalSearch8.cs" />
+    <Compile Include="ReactiveRandomLocalSearch9.cs" />
+    <Compile Include="ReactiveStochasticSearch01.cs" />
+    <Compile Include="ReactiveStochasticSearch02.cs" />
+    <Compile Include="ReactiveStochasticSearch03.cs" />
+    <Compile Include="ReactiveStochasticSearch04.cs" />
+    <Compile Include="ReactiveStochasticSearch05.cs" />
+    <Compile Include="ReactiveStochasticSearch06.cs" />
+    <Compile Include="ReactiveTabuSearch.cs" />
+    <Compile Include="ReactiveTabuSearchItem.cs" />
+    <Compile Include="Trajectory.cs" />
+    <Compile Include="VariableTabuList.cs" />
+    <Compile Include="SimulatedAnnealing.cs" />
+    <Compile Include="TabuList.cs" />
+    <Compile Include="TabuSearch.cs" />
+    <Compile Include="TabuSearch2.cs" />
+    <Compile Include="TabuList2.cs" />
+    <Compile Include="HigherLevelSearch2.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Combinatorics\Combinatorics.csproj">
+      <Project>{8fae54fa-20ce-4280-8f93-1ae1f27e6496}</Project>
+      <Name>Combinatorics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\fssp\FlowShopSchedulingProblem.csproj">
+      <Project>{d3dc7a74-2a6c-4443-a226-1a5e5dfbbe2a}</Project>
+      <Name>FlowShopSchedulingProblem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KnapsackProblem\KnapsackProblem.csproj">
+      <Project>{3cf346f0-8011-4af2-b175-44d63cbdb0d9}</Project>
+      <Name>KnapsackProblem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimizationLibrary\OptimizationLibrary.csproj">
+      <Project>{131ECCE5-5949-41D7-A2C1-472435EE720B}</Project>
+      <Name>OptimizationLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QuadraticAssignmentProblem\QuadraticAssignmentProblem.csproj">
+      <Project>{9ecc30fd-507c-400c-84bd-062e5dd5e3c9}</Project>
+      <Name>QuadraticAssignmentProblem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TravelingSalesmanProblem\TravelingSalesmanProblem.csproj">
+      <Project>{BE05A6F6-529C-466A-A1B4-42A41DFCCF77}</Project>
+      <Name>TravelingSalesmanProblem</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 および x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows インストーラー 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
