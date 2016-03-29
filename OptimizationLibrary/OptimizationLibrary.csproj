@@ -55,6 +55,7 @@
     <Compile Include="Diameter.cs" />
     <Compile Include="DicimalStream.cs" />
     <Compile Include="Extend.cs" />
+    <Compile Include="IAlgorithm.cs" />
     <Compile Include="IOperationSet.cs" />
     <Compile Include="IOptimizationProblem.cs" />
     <Compile Include="IOperation.cs" />

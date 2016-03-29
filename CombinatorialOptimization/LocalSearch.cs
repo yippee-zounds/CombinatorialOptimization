@@ -54,7 +54,7 @@ namespace CombinatorialOptimization
 
             for (int loop = 0; true; loop++)
             {
-                ISolution tmp = m.Move(s, def);
+                ISolution tmp = m.Move(s, null);
 
                 if (mk.IsNotMinimumStrict(tmp.Value))
                 {

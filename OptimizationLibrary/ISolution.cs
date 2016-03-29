@@ -14,7 +14,7 @@ namespace Drace.OptimizationLibrary
         int DistanceTo(ISolution s);
         ISolution Clone();
 
-        IEnumerable<ISolution> Neighborhood();
+        //IEnumerable<ISolution> Neighborhood();
 
         int OperationDistance(IOperation op, ISolution[] s);
 

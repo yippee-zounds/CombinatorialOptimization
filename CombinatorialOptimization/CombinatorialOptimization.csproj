@@ -68,6 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdaptiveRandomLocalSearch.cs" />
+    <Compile Include="Algorithm\LocalSearch.cs" />
+    <Compile Include="Algorithm\TabuSearch.cs" />
     <Compile Include="BestImprovement.cs" />
     <Compile Include="HigherLevelSearch.cs" />
     <Compile Include="IterativeSearch.cs" />

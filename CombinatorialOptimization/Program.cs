@@ -41,10 +41,22 @@ namespace CombinatorialOptimization
 
             for (int i = 0; true; i++)
             {
-                CombinationTest(1, 3000);
+                SingleProblemTest(new TravelingSalesmanProblem("pr107"), 100);
                 //SingleFsspTest();
                 //SingleTspTest(1);
             }
+        }
+
+        static void SingleProblemTest(IOptimizationProblem p, int itr)
+        {
+            IAlgorithm a = new Algorithm.LocalSearch();
+
+            for (int i = 0; i < itr; i++)
+            {
+                ISolution xa = a.solve(p, p.CreateRandomSolution(), new NullWriter());
+                System.Console.WriteLine(xa.Value);
+            }
+
         }
 
         static void SingleFsspTest()

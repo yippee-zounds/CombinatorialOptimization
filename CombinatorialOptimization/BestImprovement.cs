@@ -8,11 +8,12 @@ namespace CombinatorialOptimization
 {
     class BestImprovement
     {
-        public ISolution Move(ISolution solution, NeighborhoodDefinition def)
+        public ISolution Move(ISolution solution, Object def)
         {
-            ISolution tmp = solution.Neighborhood(def).ArgMinStrict((s) => s.Value);
+            throw new NotImplementedException();
+            //ISolution tmp = solution.Neighborhood().ArgMinStrict((s) => s.Value);
 
-            return tmp;
+            //return tmp;
         }
     }
 }
