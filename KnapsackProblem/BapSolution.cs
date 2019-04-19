@@ -60,7 +60,7 @@ namespace Drace.KnapsackProblem
             return this;
         }
 
-        public int DistanceTo(ISolution s)
+        public int DistanceTo(IMetric s)
         {
             int ret = 0;
             int[] p = ((BapSolution)s).bit;

@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Drace.TravelingSalesmanProblem
 {
+    [Serializable()]
     internal class EuclideanCity : ICity
     {
         private int id;

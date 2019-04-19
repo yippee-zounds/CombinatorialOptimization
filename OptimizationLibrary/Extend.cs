@@ -27,10 +27,12 @@ namespace Drace.OptimizationLibrary
                 }
                 ++t;
             }
+            //return e.Shuffle().Take(k);
         }
 
         public static IEnumerable<T> RandomSubset<T>(this System.Collections.Generic.IEnumerable<T> e, int k)
         {
+            //throw (new NotImplementedException());
             return e.Shuffle().Take(k);
         }
 
@@ -56,6 +58,12 @@ namespace Drace.OptimizationLibrary
         {
             var m = new MinimumKeeper();
             return e.Last((x) => m.IsMinimum(f(x)));
+        }
+
+        public static T ArgMax<T>(this System.Collections.Generic.IEnumerable<T> e, Func<T, int> f)
+        {
+            var m = new MinimumKeeper();
+            return e.Last((x) => m.IsMinimum(-f(x)));
         }
 
         public static double StandardDeviation(this System.Collections.Generic.IEnumerable<int> e)

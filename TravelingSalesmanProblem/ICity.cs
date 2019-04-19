@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Drace.TravelingSalesmanProblem
 {
-    public interface ICity
+    interface ICity
     {
         int DistanceTo(ICity city);
         int ID { get;}

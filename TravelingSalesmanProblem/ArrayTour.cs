@@ -6,6 +6,7 @@ using Drace.OptimizationLibrary;
 
 namespace Drace.TravelingSalesmanProblem
 {
+    [Serializable()]
     public class ArrayTour : ISolution
     {
         private int[] p;
@@ -43,7 +44,7 @@ namespace Drace.TravelingSalesmanProblem
             return ret;
         }
 
-        public int DistanceTo(ISolution s)
+        public int DistanceTo(IMetric s)
         {
             ArrayTour t = (ArrayTour)s;
             int length = p.Length;

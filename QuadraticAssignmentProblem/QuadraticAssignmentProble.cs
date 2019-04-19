@@ -8,6 +8,7 @@ using Drace.OptimizationLibrary;
 
 namespace Drace.QuadraticAssignmentProblem
 {
+    [Serializable()]
     public class QuadraticAssignmentProblem : IOptimizationProblem
     {
         private int[,] dist = null;

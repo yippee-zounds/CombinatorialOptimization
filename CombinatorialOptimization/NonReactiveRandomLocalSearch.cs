@@ -30,8 +30,8 @@ namespace CombinatorialOptimization
             ISolution s = sol.Clone();
             long endCount = long.MaxValue;
             int subLoop = 0;
-            int sizeOfSubset = this.initialSizeOfSubset;
             int sizeOfNeighborhood = p.OperationSet().Count();
+            int sizeOfSubset = sizeOfNeighborhood;//this.initialSizeOfSubset;
             int bestLoop = 0;
 
             w.WriteLine("loop:sub:r:vx:doptx:vdom:ddomx:doptdom:r10:r100:tact:dm10:dm:dom:x");
@@ -46,49 +46,49 @@ namespace CombinatorialOptimization
 
                 ISolution dom = new LocalSearch().Solve(p, s);
 
-                doms.Add(dom);
+                //doms.Add(dom);
                 ss.Add(s.Clone());
 
-                ISolution s10 = ss.ElementAt(Math.Max(ss.Count() - 10, 0));
-                ISolution s100 = ss.ElementAt(Math.Max(ss.Count() - 100, 0));
-
-
-                int d10 = 0;
-                for (int i = 0; i < Math.Min(ss.Count - 1, 10); i++)
+                ISolution s20 = ss.ElementAt(Math.Max(ss.Count() - 20, 0));
+                int d20 = 0;
+                for (int i = 1; i < Math.Min(ss.Count - 1, 20); i++)
                 {
-                    d10 += ss.ElementAt(i).DistanceTo(ss.ElementAt(i + 1));
+                    d20 += ss.ElementAt(ss.Count() - i).DistanceTo(ss.ElementAt(ss.Count() - i - 1));
                 }
-                
+                double r20 = 0.0;
+                if(d20 != 0) r20 = (double)s.DistanceTo(s20) / d20;
+
+
+                /*
+                ISolution s100 = ss.ElementAt(Math.Max(ss.Count() - 100, 0));
                 int d100 = 0;
                 for (int i = 0; i < Math.Min(ss.Count - 1, 100); i++)
                 {
                     d100 += ss.ElementAt(i).DistanceTo(ss.ElementAt(i + 1));
                 }
-                //double r10 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 10, 0))) / Math.Min(2 * Math.Min(ss.Count(), 10), p.Size);
-                //double r100 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 100, 0))) / Math.Min(2 * Math.Min(ss.Count(), 100), p.Size);
-                   
-                double r10 = (double)s.DistanceTo(s10) / d10;
-                double r100 = (double)s10.DistanceTo(s100) / d100;
+                double r100 = (double)s20.DistanceTo(s100) / d100;
                 Diameter dm10 = Diameter.CalculateDiameter(ss, 10);
                 Diameter dm100 = Diameter.CalculateDiameter(ss, 100);
-
+                
                 Diameter dm = Diameter.CalculateDiameter(ss, Math.Max(2, loop - 4997));
-                Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + dom.Value + ":" + s.DistanceTo(p.Optimum).ToString("D4") + ":" + ":" + sizeOfSubset.ToString("D4") + ":" + dm.DiameterValue + ":" + targetAct.ToString("F2") + ":" + r10.ToString("F2") + ":" + endCount);
+                */
+                //Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + dom.Value + ":" + plus + ":" + minus + ":" + s.DistanceTo(p.Optimum).ToString("D4") + ":" + ":" + sizeOfSubset.ToString("D4") + ":" + dm.DiameterValue + ":" + targetAct.ToString("F2") + ":" + r20.ToString("F2") + ":" + endCount);
+                Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + dom.Value + ":" + s.DistanceTo(p.Optimum).ToString("D4") + ":" + ":" + sizeOfSubset.ToString("D4") + ":" + 0 + ":" + targetAct.ToString("F2") + ":" + r20.ToString("F2") + ":" + endCount);
                 //Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + dom.Value + ":" + s.DistanceTo(p.Optimum).ToString("D4") + ":" + /*dom.DistanceTo(p.Optimum).ToString("D4") +*/ ":" + sizeOfSubset.ToString("D4") + ":" + targetAct.ToString("F2") + ":" + r10.ToString("F2") + ":" + endCount);
                 //Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + s.DistanceTo(p.Optimum) + ":" + sizeOfSubset + ":" + targetAct.ToString("F2") + ":" + r10.ToString("F2") + ":" + endCount);
-                
+
                 if (0 <= subLoop)
                 {
 
-                    if (r10 < targetAct)
+                    if (r20 < targetAct)
                     {
-                        sizeOfSubset = Math.Max(sizeOfSubset - Math.Max((int)(sizeOfNeighborhood * 0.001), 1), 1);
-                        subLoop = -1;// Math.Min(-5, sizeOfSubset);
+                        sizeOfSubset = Math.Max(sizeOfSubset - Math.Max((int)(sizeOfNeighborhood * 0.01), 1), 1);
+                        subLoop = Math.Min(-20, sizeOfSubset); //-1;// Math.Min(-5, sizeOfSubset);
                     }
                     else
                     {
-                        sizeOfSubset = Math.Min(sizeOfSubset + Math.Max((int)(sizeOfNeighborhood * 0.001), 1), sizeOfNeighborhood);
-                        subLoop = -1;// Math.Min(-5, sizeOfSubset);
+                        sizeOfSubset = Math.Min(sizeOfSubset + Math.Max((int)(sizeOfNeighborhood * 0.01), 1), sizeOfNeighborhood);
+                        subLoop = Math.Min(-20, sizeOfSubset); //-1;// Math.Min(-5, sizeOfSubset);
                     }
                 }
                 if (!s.IsFeasible())
@@ -97,15 +97,16 @@ namespace CombinatorialOptimization
                 }
                 ++subLoop;
                 ++bestLoop;
-                if (5000 <= loop)
+                //if (5000 <= loop)
                 {
-                    w.WriteLine(Trace(loop, sizeOfSubset, 0, p.Optimum, dom, r10, r100, dm10.DiameterValue, dm.DiameterValue, targetAct, s));
+                    w.WriteLine(Trace(loop, sizeOfSubset, 0, p.Optimum, dom, r20, 0, 0, 0, targetAct, s));
                 }
 
+                /*
                 IEnumerable<IOperation> ops = p.OperationSet().RandomSubset(sizeOfNeighborhood, sizeOfSubset);
                 IEnumerable<int> opsf = ops.Select((op) => p.OperationValue(op, s));
                 IOperation tmpOp = ops.ArgMinStrict((op) => p.OperationValue(op, s));
-
+                */
                 IOperation bestOp = p.OperationSet().RandomSubset(sizeOfNeighborhood, sizeOfSubset).ArgMinStrict((op) => p.OperationValue(op, s));
                 int delta = p.OperationValue(bestOp, s);
                 ISolution tmp = s.Apply(bestOp);

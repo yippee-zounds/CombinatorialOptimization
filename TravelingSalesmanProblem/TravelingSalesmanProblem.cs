@@ -8,6 +8,7 @@ using Drace.OptimizationLibrary;
 
 namespace Drace.TravelingSalesmanProblem
 {
+    [Serializable()]
     public class TravelingSalesmanProblem : IOptimizationProblem
     {
         private int idCount;
@@ -35,7 +36,7 @@ namespace Drace.TravelingSalesmanProblem
             return ArrayTour.Random(this);
         }
 
-        public IEnumerable<IOperation> OperationSet(ISolution x)
+        public IEnumerable<IOperation> OperationSet()
         {
             int count = 0;
             for (int i = 1; i < this.Size - 1; i++)
@@ -43,7 +44,7 @@ namespace Drace.TravelingSalesmanProblem
                 for (int j = i + 1; j < this.Size - 0; j++)
                 {
                     count++;
-                    yield return new TwoOptOperation(this.Size, i, j, (ArrayTour)x);
+                    yield return new TwoOptOperation(this.Size, i, j);
                 }
             }
         }

@@ -33,28 +33,7 @@ namespace CombinatorialOptimization
 
                 IOperation bestOp = p.OperationSet().ArgMinStrict((op) => p.OperationValue(op, s));
                 //int val = p.OperationValue(bestOp, s);
-                ISolution tmp = s.Apply(bestOp);
-
-                if (mk.IsNotMinimumStrict(tmp.Value))
-                {
-                    w.WriteLine(Trace(loop, p.Optimum, s, sol));
-                    return s;
-                }
-                s = tmp;
-            }
-        }
-
-        public ISolution SolveByStep(IOptimizationProblem p, ISolution sol, DataStoringWriter w)
-        {
-            ISolution s = sol.Clone();
-            MinimumKeeper mk = new MinimumKeeper();
-            BestImprovement m = new BestImprovement();
-
-            w.WriteLine("loop:vx:doptx:dom:x");
-
-            for (int loop = 0; true; loop++)
-            {
-                ISolution tmp = m.Move(s, null);
+                ISolution tmp = s.Clone().Apply(bestOp);
 
                 if (mk.IsNotMinimumStrict(tmp.Value))
                 {

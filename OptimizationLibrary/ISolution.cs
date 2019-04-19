@@ -5,16 +5,14 @@ using System.Text;
 
 namespace Drace.OptimizationLibrary
 {
-    public interface ISolution
+    public interface ISolution : IMetric
     {
         ISolution Apply(IOperation op);
         ISolution ReverseApply(IOperation op);
         ISolution CloneApply(IOperation op);
         int Value {get; }
-        int DistanceTo(ISolution s);
+        int DistanceTo(IMetric m);
         ISolution Clone();
-
-        //IEnumerable<ISolution> Neighborhood();
 
         int OperationDistance(IOperation op, ISolution[] s);
 

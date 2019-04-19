@@ -45,7 +45,7 @@ namespace Drace.Optimization.FSSP {
              * */
         }
 
-        public int DistanceTo(ISolution s)
+        public int DistanceTo(IMetric s)
         {
             FsspSolution t = (FsspSolution)s;
             int[] pos = new int[t.Size];

@@ -19,7 +19,7 @@ namespace Drace.TravelingSalesmanProblem
                 for (int j = i + 1; j < this.Size - 0; j++)
                 {
                     count++;
-                    yield return new TwoOptOperation(this.Size, i, j, null);
+                    yield return new TwoOptOperation(this.Size, i, j);
                 }
             }
         }

@@ -52,7 +52,13 @@ namespace CombinatorialOptimization
 
                     ISolution dom = new LocalSearch().Solve(p, s);
                     ss.Add(s.Clone());
-                    double r10 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 10, 0))) / Math.Min(2 * Math.Min(ss.Count(), 10), p.Size);
+                    int dd = 20;
+                    int d10 = 0;
+                    for (int j = 1; j < Math.Min(ss.Count - 1, dd); j++)
+                    {
+                        d10 += ss.ElementAt(ss.Count() - j).DistanceTo(ss.ElementAt(ss.Count() - j - 1));
+                    }
+                    double r10 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 20, 0))) / d10;
                     double r100 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 100, 0))) / Math.Min(2 * Math.Min(ss.Count(), 100), p.Size);
                     //double r1000 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 1000, 0))) / Math.Min(2 * Math.Min(ss.Count(), 1000), p.Size);
 

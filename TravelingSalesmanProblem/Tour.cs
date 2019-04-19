@@ -20,7 +20,7 @@ namespace Drace.TravelingSalesmanProblem
         public abstract ISolution Apply(IOperation op);
         public abstract ISolution ReverseApply(IOperation op);
         public abstract ISolution CloneApply(IOperation op);
-        public int DistanceTo(ISolution s)
+        public int DistanceTo(IMetric s)
         {
             return -1;
         }

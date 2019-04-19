@@ -10,9 +10,9 @@ namespace Drace.OptimizationLibrary
         int Size { get; }
         ISolution Optimum { get; }
         ISolution CreateRandomSolution();
-        IEnumerable<IOperation> OperationSet(ISolution x);
+        IEnumerable<IOperation> OperationSet();
         int Evaluate(ISolution s); 
-        int OperationValue(IOperation op, ISolution x);
+        int OperationValue(IOperation op, ISolution s);
         string Name { get; }
     }
 }

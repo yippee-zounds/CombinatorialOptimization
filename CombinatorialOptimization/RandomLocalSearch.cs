@@ -8,7 +8,7 @@ namespace CombinatorialOptimization
 {
     class RandomLocalSearch :  IOptimizationAlgorithm
     {
-        private int loop;
+        private int loopMax;
         private int sizeOfSubset;
         private long limit;
         
@@ -48,20 +48,28 @@ namespace CombinatorialOptimization
         {
             ISolution ret = sol.Clone();
             ISolution s = sol.Clone();
+            ISolution domBest = sol.Clone();
             MinimumKeeper mk = new MinimumKeeper();
             long endCount;
             List<ISolution> doms = new List<ISolution>();
             List<ISolution> ss = new List<ISolution>();
             int sizeOfNeighborhood = p.OperationSet().Count();
-            w.WriteLine("loop:r:vx:doptx:vdom:ddomx:r10:r100:r1000:cor10:cor100:cor1000:dm10:dm100:dm1000:x");
-
-            for(int loop = 0; true; loop++)
+            int sumDistance = 0;
+            double sumV = 0.0;
+            double varV = 0.0;
+            double sumD = 0.0;
+            double varD = 0.0;
+            int count = 0;
+            w.WriteLine("loop:r:vx:doptx:vdom:ddomx:r10:r100:r1000:cor10:cor100:cor1000:dm10:dm100:dm1000:dom:x");
+            
+            for(int loop = 0; loop < loopMax; loop++)
             {
                 double plus = p.OperationSet().Where((op) => p.OperationValue(op, s) >= 0).Count();
                 double minus = p.OperationSet().Where((op) => p.OperationValue(op, s) < 0).Count();
                 endCount = limit;
 
                 ISolution dom = new LocalSearch().Solve(p, s);
+                if (dom.Value < domBest.Value) domBest = dom.Clone();
 
                 doms.Add(dom);
                 ss.Add(s.Clone());
@@ -82,16 +90,17 @@ namespace CombinatorialOptimization
                 Diameter dm100  = Diameter.CalculateDiameter(ss, 100);
                 //Diameter dm1000 = Diameter.CalculateDiameter(ss, 1000);
 
-                Console.WriteLine(loop + ":" + s.Value + ":" + dom.Value + ":" + endCount);
+                //Console.WriteLine(loop + ":" + s.Value + ":" + dom.Value + ":" + endCount);
                 w.WriteLine(Trace(loop, minus / (plus + minus), p.Optimum, dom, r10, r100, 0, 0, cor100, 0, dm10.DiameterValue, dm100.DiameterValue, 0, s));
 
                 IOperation bestOp = p.OperationSet().RandomSubset(sizeOfNeighborhood, sizeOfSubset).ArgMinStrict((op) => p.OperationValue(op, s));
                 //int val = p.OperationValue(bestOp, s);
-                ISolution tmp = s.Apply(bestOp);
+                ISolution tmp = s.Clone().Apply(bestOp);
 
                 if (s.Value <= ret.Value)
                     ret = s.Clone();
 
+                /*
                 if (this.loop == 0 && endCount <= 0)
                 {
                     //Analizer.createDomainMap(ss, doms, p);
@@ -108,10 +117,28 @@ namespace CombinatorialOptimization
                 {
                     endCount -= sizeOfSubset;
                     --loop;
+                }/**/
+
+                if (500 < loop)
+                {
+                    sumV += s.Value;
+                    varV += (double)s.Value * (double)s.Value;
+                    sumD += sol.DistanceTo(tmp);
+                    varD += sol.DistanceTo(tmp) * sol.DistanceTo(tmp);
+                    ++count;
+                    //Console.WriteLine(varV);
                 }
 
+                sumDistance += s.DistanceTo(tmp);
+                //Console.WriteLine(sizeOfSubset + "\t" + loop + "\t" + sol.DistanceTo(tmp) + "\t" + sumDistance + "\t" + ((double)sol.DistanceTo(tmp) / sumDistance));
                 s = tmp;
             }
+
+            //Console.WriteLine(varV + "\t" + Math.Pow(sumV / count, 2));
+            Console.WriteLine(sizeOfSubset + "\t" + (sumV / count) + "\t" + Math.Sqrt(varV / count - Math.Pow(sumV / count, 2.0)) + "\t" + (sumD / count) + "\t" + Math.Sqrt(varD / count - Math.Pow(sumD / count, 2.0)));
+            //Console.WriteLine();
+            //Console.WriteLine(sizeOfSubset + ":" + sizeOfNeighborhood + ":" + ret.Value + ":" + domBest.Value + ":" + (ret.Value - domBest.Value));
+            return ret;
         }
 
         public ISolution Solve(IOptimizationProblem p, IOperationSet ops, ISolution sol, DataStoringWriter w)
@@ -157,7 +184,7 @@ namespace CombinatorialOptimization
         }
         private string Trace(int loop, double ratio, ISolution opt, ISolution dom, double r10, double r100, double r1000, double rr10, double rr100, double rr1000, int dm10, int dm100, int dm1000, ISolution x)
         {
-            return loop + ":" + ratio.ToString("F5") + ":" + x.Value + ":" + opt.DistanceTo(x) + ":" + dom.Value + ":" + dom.DistanceTo(x) + ":" + r10.ToString("F5") + ":" + r100.ToString("F5") + ":" + r1000.ToString("F5") + ":" + rr10.ToString("F5") + ":" + rr100.ToString("F5") + ":" + rr1000.ToString("F5") + ":" + dm10 + ":" + dm100 + ":" + dm1000 + ":" + x;
+            return loop + ":" + ratio.ToString("F5") + ":" + x.Value + ":" + opt.DistanceTo(x) + ":" + dom.Value + ":" + dom.DistanceTo(x) + ":" + r10.ToString("F5") + ":" + r100.ToString("F5") + ":" + r1000.ToString("F5") + ":" + rr10.ToString("F5") + ":" + rr100.ToString("F5") + ":" + rr1000.ToString("F5") + ":" + dm10 + ":" + dm100 + ":" + dm1000 + ":" + dom + ":" + x;
         }
 
         private string Trace(int loop, double ratio, ISolution opt, ISolution dom, Diameter d1, Diameter d2, int d10, int d100, ISolution x)
@@ -167,19 +194,19 @@ namespace CombinatorialOptimization
 
         public override string ToString()
         {
-            return this.GetType().Name + "[loop=" + loop + ",subset=" + sizeOfSubset + ",lim=" + limit + "]";
+            return this.GetType().Name + "[loop=" + loopMax + ",subset=" + sizeOfSubset + ",lim=" + limit + "]";
         }
 
         public RandomLocalSearch(int loop, int sizeOfSubset, long limit)
         {
-            this.loop = loop;
+            this.loopMax = loop;
             this.sizeOfSubset = sizeOfSubset;
             this.limit = limit;
         }
 
         public RandomLocalSearch(int sizeOfSubset, long limit)
         {
-            this.loop = 0;
+            this.loopMax = 0;
             this.sizeOfSubset = sizeOfSubset;
             this.limit = limit;
         }

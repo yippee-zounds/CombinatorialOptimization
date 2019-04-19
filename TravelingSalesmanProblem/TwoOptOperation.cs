@@ -11,27 +11,23 @@ namespace Drace.TravelingSalesmanProblem
         public int size = -1;
         public int i;
         public int j;
-        private int hashCode = -1;
 
-        public TwoOptOperation(int size, int i, int j, ArrayTour t)
+        public TwoOptOperation(int i, int j)
+        {
+            this.i = i;
+            this.j = j;
+        }
+
+        public TwoOptOperation(int size, int i, int j)
         {
             this.i = i;
             this.j = j;
             this.size = size;
-
-            int bi = branch(size, t[i - 1], t[i]);
-            int bj = branch(size, t[j], t[j + 1]);
-            this.hashCode = size * size * Math.Min(bi, bj) + Math.Max(bi, bj);
-        }
-
-        private int branch(int size, int m, int n)
-        {
-            return size * Math.Min(m, n) + Math.Max(m, n);
         }
 
         public override int GetHashCode()
         {
-            return this.hashCode;
+            return i * size + j;
         }
 
         public override string ToString()

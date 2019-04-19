@@ -71,22 +71,22 @@ namespace Drace.OptimizationLibrary
                 return this.diameter;
             }
         }
-        public static Diameter CalculateDiameter(List<ISolution> ss)
+        public static Diameter CalculateDiameter(IEnumerable<ISolution> ss)
         {
-            return CalculateDiameter(ss, ss.Count);
+            return CalculateDiameter(ss, ss.Count());
         }
 
-        public static Diameter CalculateDiameter(List<ISolution> ss, int regionSize)
+        public static Diameter CalculateDiameter(IEnumerable<ISolution> ss, int regionSize)
         {
             int distMax = 0;
             int distMin = int.MaxValue;
             ISolution far1 = null;
             ISolution far2 = null;
             
-            for (int i = Math.Max(0, ss.Count - regionSize); i < ss.Count; i++)
+            for (int i = Math.Max(0, ss.Count() - regionSize); i < ss.Count(); i++)
             {
                 ISolution s = ss.ElementAt(i);
-                for (int j = i + 1; j < ss.Count; j++)
+                for (int j = i + 1; j < ss.Count(); j++)
                 {
                     int distTmp = s.DistanceTo(ss.ElementAt(j));
                     if (distMax <= distTmp)

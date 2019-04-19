@@ -41,6 +41,9 @@ namespace CombinatorialOptimization
             ISolution highBest = sol.Clone();
             int bestLoop2 = 0;
             int highLoop = 0;
+            long highCalc = 0;
+            long lowCalc = 0;
+            int sw = 0;
 
             w.WriteLine("loop:sub:r:vx:doptx:vdom:ddomx:doptdom:r10:r100:tact:dm10:dm100:dom:x");
 
@@ -77,6 +80,14 @@ namespace CombinatorialOptimization
                 }
                 double r10 = (double)s.DistanceTo(s10) / d10;
 
+                int dd = 20;
+                int d10_2 = 0;
+                for (int i = 1; i < Math.Min(ss.Count - 1, dd); i++)
+                {
+                    d10_2 += ss.ElementAt(ss.Count() - i).DistanceTo(ss.ElementAt(ss.Count() - i - 1));
+                }
+                double r10_2 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - dd, 0))) / d10_2;
+
                 int d100 = 0;
                 for (int i = 0; i < Math.Min(ss.Count - 1, 100); i++)
                 {
@@ -96,7 +107,7 @@ namespace CombinatorialOptimization
 
                 if (10000 < highLoop && targetAct == targetHighAct) highBest = s.Clone();
 
-                Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + dom.Value + ":" + highBest.Value + ":" + s.DistanceTo(p.Optimum).ToString("D4") + ":" + ":" + sizeOfSubset.ToString("D4") + ":" + dm100.DiameterValue + ":" + targetAct.ToString("F2") + ":" + r10.ToString("F2") + ":" + endCount + add);
+                Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + dom.Value + ":" + highBest.Value + ":" + s.DistanceTo(p.Optimum).ToString("D4") + ":" + ":" + sizeOfSubset.ToString("D4") + ":" + r10_2.ToString("F2") + ":" + targetAct.ToString("F2") + ":" + r10.ToString("F2") + ":" + lowCalc + ":" + highCalc + ":" + sw + ":" + endCount + add);
                 //Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + dom.Value + ":" + s.DistanceTo(p.Optimum).ToString("D4") + ":" + /*dom.DistanceTo(p.Optimum).ToString("D4") +*/ ":" + sizeOfSubset.ToString("D4") + ":" + targetAct.ToString("F2") + ":" + r10.ToString("F2") + ":" + endCount);
                 //Console.WriteLine(loop + ":" + ret.Value + ":" + s.Value + ":" + s.DistanceTo(p.Optimum) + ":" + sizeOfSubset + ":" + targetAct.ToString("F2") + ":" + r10.ToString("F2") + ":" + endCount);
 
@@ -105,25 +116,27 @@ namespace CombinatorialOptimization
                 {
                     if(targetAct == targetLowAct) highLoop = 0;
 
+                    if (targetAct == targetLowAct) sw++;
                     targetAct = targetHighAct;
                 }
                 else if(s.Value == highBest.Value)
                 {
+                    if (targetAct == targetHighAct) sw++;
                     targetAct = targetLowAct;
                 }
 
                 if (0 <= subLoop)
                 {
 
-                    if (r10 < targetAct)
+                    if (r10_2 < targetAct)
                     {
                         sizeOfSubset = Math.Max(sizeOfSubset - (int)(sizeOfNeighborhood * 0.01), 1);
-                        subLoop = Math.Min(-10, sizeOfSubset);
+                        subLoop = Math.Min(-20, sizeOfSubset);
                     }
                     else
                     {
                         sizeOfSubset = Math.Min(sizeOfSubset + (int)(sizeOfNeighborhood * 0.01), sizeOfNeighborhood);
-                        subLoop = Math.Min(-10, sizeOfSubset);
+                        subLoop = Math.Min(-20, sizeOfSubset);
                     }
                 }
                 if (!s.IsFeasible())
@@ -166,6 +179,8 @@ namespace CombinatorialOptimization
                     return ret;
                 }
 
+                if (targetAct == targetHighAct) highCalc += sizeOfSubset;
+                else lowCalc += sizeOfSubset;
 
                 s = tmp;
             }

@@ -7,7 +7,8 @@ using Drace.OptimizationLibrary;
 
 namespace Drace.QuadraticAssignmentProblem
 {
-    class QapSolution : ISolution
+    [Serializable()]
+    public class QapSolution : ISolution
     {
         private QuadraticAssignmentProblem qap;
         public int[] perm;
@@ -64,7 +65,7 @@ namespace Drace.QuadraticAssignmentProblem
             }
         }
 
-        public int DistanceTo(ISolution s)
+        public int DistanceTo(IMetric s)
         {
             int ret = 0;
             int[] p = ((QapSolution)s).perm;

@@ -49,6 +49,8 @@ namespace CombinatorialOptimization
             List<ISolution> doms = new List<ISolution>();
             List<ISolution> ss = new List<ISolution>();
 
+            //w.WriteLine("loop:vx:doptx:dloptx:doptlopt:x");
+            //w.WriteLine("loop:vbest:vx:vdom:r10:r100:r1000:doptx:dloptx:doptlopt:ddomx:doptdom:dloptdom:doptbest:dloptbest:ddombest:dbestx:x");
             w.WriteLine("loop:vbest:vx:vdom:doptx:ddomx:r10:r100:cor10:cor100:dm10:dm100:dom:x");
 
             for (int loop = 0; loop < loopMax; loop++)
@@ -58,20 +60,39 @@ namespace CombinatorialOptimization
                 doms.Add(dom);
                 ss.Add(s.Clone());
 
-                ISolution s1 = ss.ElementAt(Math.Max(ss.Count() - 1 - 1, 0));
-                ISolution s10 = ss.ElementAt(Math.Max(ss.Count() - 10 - 1, 0));
+                ISolution s1 = ss.ElementAt(Math.Max(ss.Count() - 1, 0));
+                ISolution s10 = ss.ElementAt(Math.Max(ss.Count() - 20, 0));
                 ISolution s100 = ss.ElementAt(Math.Max(ss.Count() - 100 - 1, 0));
-                double r10 = (double)s.DistanceTo(s10) / Math.Min(2 * Math.Min(Math.Max(ss.Count() - 1, 1), 10), p.Size);
+                //ISolution s1000 = ss.ElementAt(Math.Max(ss.Count() - 1000 - 1, 0));
+                int dd = 20;
+                int d10 = 0;
+                for (int i = 1; i < Math.Min(ss.Count - 1, dd); i++)
+                {
+                    d10 += ss.ElementAt(ss.Count() - i).DistanceTo(ss.ElementAt(ss.Count() - i - 1));
+                }
+                double r10 = (double)s.DistanceTo(s10) / d10;
                 double r100 = (double)s10.DistanceTo(s100) / Math.Min(2 * Math.Min(Math.Max(ss.Count() - 1, 1), 90), p.Size);
+                //double r1000 = (double)s100.DistanceTo(s1000) / Math.Min(2 * Math.Min(Math.Max(ss.Count() - 1, 1), 900), p.Size);
 
                 double cor10 = calcCorrelation(s, s1, s10);
                 double cor100 = calcCorrelation(s, s10, s100);
+                //double cor1000 = calcCorrelation(s, s100, s1000);
 
                 int dm10 = Diameter.CalculateDiameter(ss, 10).DiameterValue;
                 int dm100 = Diameter.CalculateDiameter(ss, 100).DiameterValue;
+                //int dm1000 = Diameter.CalculateDiameter(ss, 1000).DiameterValue;
 
                 w.WriteLine(Trace2(loop, p.Optimum, lopt, dom, ret, s, p.OperationSet(), tabuList, p, r10, r100, cor10, cor100 , dm10, dm100));
 
+                /*
+                ss.Add(s.Clone());
+                double r10 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 10, 0))) / Math.Min(2 * Math.Min(ss.Count(), 10), p.Size);
+                double r100 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 100, 0))) / Math.Min(2 * Math.Min(ss.Count(), 100), p.Size);
+                double r1000 = (double)s.DistanceTo(ss.ElementAt(Math.Max(ss.Count() - 1000, 0))) / Math.Min(2 * Math.Min(ss.Count(), 1000), p.Size);
+
+                w.WriteLine(Trace2(loop, p.Optimum, lopt, dom, ret, s, p.OperationSet(), tabuList, p, r10, r100, r1000));
+                //w.WriteLine(Trace2(loop, p.Optimum, lopt, ls.Solve(p, s), ret, s, p.OperationSet(), tabuList, p));
+                */
                 IOperation bestOp = p.OperationSet()
                     .Where((op) => tabuList.IsNotTabu(op, loop))
                     .ArgMinStrict((op) => p.OperationValue(op, s));
@@ -84,6 +105,12 @@ namespace CombinatorialOptimization
                 s = tmp;
                 tabuList.Add(bestOp, loop, bestOpValue);
             }
+            //w.WriteLine(Trace(loopMax, p.Optimum, lopt, ls.Solve(p, s), ret, s));
+            //w.WriteLine(Trace(loopMax, p.Optimum, lopt, ls.Solve(p, ret), ret, ret));
+            //w.WriteLine(loopMax + ":" + s.Value + ":" + lopt.DistanceTo(s) + ":" + p.Optimum.DistanceTo(s) + ":" + s.ToString());
+            //w.WriteLine(loopMax + ":" + ret.Value + ":" + lopt.DistanceTo(ret) + ":" + p.Optimum.DistanceTo(ret) + ":" + ret.ToString());
+
+            //Analizer.createDomainMap(ss, doms, p);
 
             return ret;
         }
@@ -93,7 +120,9 @@ namespace CombinatorialOptimization
             return loop + ":" + best.Value + ":" + x.Value + ":" + dom.Value + ":" + r10.ToString("F5") + ":" + r100.ToString("F5") + ":" + r1000.ToString("F5")
                 + ":" + opt.DistanceTo(x) + ":" + lopt.DistanceTo(x) + ":" + opt.DistanceTo(lopt) + ":"
                 + dom.DistanceTo(x) + ":" + opt.DistanceTo(dom) + ":" + lopt.DistanceTo(dom) + ":" + opt.DistanceTo(best) + ":" + lopt.DistanceTo(best)
-                + dom.DistanceTo(best) + ":" + x.DistanceTo(best) + ":" + x;
+                + dom.DistanceTo(best) + ":" + x.DistanceTo(best) + ":" + x //+ "{" + kvp.Select((kv) => kv.Value).Min() + "," + kvp.Select((kv) => kv.Value).Max() + "}"
+                //+ ":"+ string.Join(",", kvp.Select((kv) => kv.Key))
+                ;
         }
 
         private string Trace2(int loop, ISolution opt, ISolution lopt, ISolution dom, ISolution best, ISolution x, IEnumerable<IOperation> ops, TabuList2 tl, IOptimizationProblem p, double r10, double r100, double cor10, double cor100, int dm10, int dm100)
@@ -105,7 +134,9 @@ namespace CombinatorialOptimization
 
             return loop + ":" + best.Value + ":" + x.Value + ":" + dom.Value + ":" + opt.DistanceTo(x) + ":" + dom.DistanceTo(x) + ":"
                 + r10.ToString("F5") + ":" + r100.ToString("F5") + ":" + cor10.ToString("F5") + ":" + cor100.ToString("F5") + ":" + dm10 + ":" + dm100 
-                + ":" + dom + ":" + x;
+                + ":" + dom + ":" + x //+ "{" + kvp.Select((kv) => kv.Value).Min() + "," + kvp.Select((kv) => kv.Value).Max() + "}"
+                //+ ":"+ string.Join(",", kvp.Select((kv) => kv.Key))
+                ;
         }
 
         private string Trace2(int loop, ISolution opt, ISolution lopt, ISolution dom, ISolution best, ISolution x, IEnumerable<IOperation> ops, TabuList2 tl, IOptimizationProblem p)
@@ -122,7 +153,9 @@ namespace CombinatorialOptimization
             return loop + "," + best.Value + "," + dom.Value + ","  + x.Value +" , " + tabuUpUp + "," + tabuUpDn + "," + notTabuUp + " , " + tabuDnUp + "," + tabuDnDn + "," + notTabuDn// + " , " + x
                 + ","+ opt.DistanceTo(x) + "," + lopt.DistanceTo(x) + "," + opt.DistanceTo(lopt) + ","
                 + dom.DistanceTo(x) + "," + opt.DistanceTo(dom) + "," + lopt.DistanceTo(dom) + "," + opt.DistanceTo(best) + "," + lopt.DistanceTo(best) + ","
-                + dom.DistanceTo(best) + "," + x.DistanceTo(best);
+                + dom.DistanceTo(best) + "," + x.DistanceTo(best) //+ "{" + kvp.Select((kv) => kv.Value).Min() + "," + kvp.Select((kv) => kv.Value).Max() + "}"
+                //+ ":"+ string.Join(",", kvp.Select((kv) => kv.Key))
+                ;
         }
 
         private string Trace(int loop, ISolution opt, ISolution lopt, ISolution dom, ISolution best, ISolution x)
